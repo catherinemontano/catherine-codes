@@ -7,6 +7,7 @@
 // take a breath. take it slow.
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
     @State private var currentQuote = ""
@@ -18,6 +19,8 @@ struct ContentView: View {
     @State private var isInhaling = true
     @State private var isEnd = false
     @State private var endMessage = ""
+    @State private var audioPlayer: AVAudioPlayer? // optional unless the file is missing
+    
     
     
     let totalBreath =  2
@@ -65,6 +68,7 @@ struct ContentView: View {
             .onAppear {
                 currentQuote = getRandomQuote()
                 endMessage = getEndMessage()
+                //playBackgroundAudio()
             }
         }
     }
@@ -127,6 +131,22 @@ struct ContentView: View {
     func getEndMessage() -> String {
         return endQuote.randomElement() ?? "end lol"
     }
+    
+   /* func playBackgroundAudio() {
+        guard let sound = Bundle.main.url(forResource: "calm", withExtension: "wav") else {
+            print("Audio file not found")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: sound)
+            audioPlayer?.numberOfLoops = -1
+            audioPlayer?.volume = 0.1
+            audioPlayer?.play()
+        } catch {
+            print("Failed to play audio: \(error.localizedDescription)")
+        }
+    }
+    */
 }
  
     #Preview {
@@ -134,7 +154,11 @@ struct ContentView: View {
     }
 
 
-// sound
+// sound -- background and inhale and exhale
 // components / assets
 // style it out
+// add haptics
+
+// next project: social media clone
+// lemon8?
 
