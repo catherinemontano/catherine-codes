@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  BreatheTest
 //
-//  Created by icy ;p on 6/14/25.
+//  Created by Catherine Montano on 6/14/25.
 // random idea on a saturday morning
 // take a breath. take it slow.
 
@@ -19,7 +19,7 @@ struct ContentView: View {
     @State private var isInhaling = true
     @State private var isEnd = false
     @State private var endMessage = ""
-    @State private var audioPlayer: AVAudioPlayer? // optional unless the file is missing
+    @State private var audioPlayer: AVAudioPlayer?
     
     
     
@@ -28,24 +28,54 @@ struct ContentView: View {
     
     var body: some View {
         ZStack{
-            Color.purple
+            Image("background-image")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                
             
             VStack {
                 HStack {
+                    Spacer(minLength: 16)
                     Text(isEnd ? endMessage : currentQuote)
-                        .fontWeight(.bold)
-                        .font(.system(size:42))
+                        .font(.title)
+                        .fontWeight(.semibold)
                         .animation(.easeIn)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(10)
+                        .shadow(radius: 5)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 250)
+                    Spacer(minLength: 16)
                 }
+                Spacer()
                 
-                Circle()
-                    .foregroundColor(.white)
-                    .frame(width: 100, height: 100)
+               
+                    ZStack {
+                        Circle()
+                            .foregroundColor(Color(red: 1.0, green: 0.8, blue: 0.9).opacity(0.3).opacity(0.90))
+                            .overlay(
+                                Circle().stroke(Color(red: 1.0, green: 0.8, blue: 0.9).opacity(1), lineWidth: 1)
+                            )
+                            .blur(radius: 10)
+                            .overlay(
+                                Circle().stroke(Color.white.opacity(0.75), lineWidth: 3)
+                            )
+                            .blur(radius: 10)
+                           
+                    }
+                    .background(.ultraThinMaterial)
+                    .frame(width: 200, height: 200)
+                    .clipShape(Circle())
                     .scaleEffect(scale)
                     .animation(.easeInOut(duration: 3), value: scale)
+                Spacer()
                 
                 Text(isInhaling ? "Inhaling" : "Exhaling")
                 
+                Spacer()
                 
                 Button(action: {
                     isRunning.toggle()
@@ -60,8 +90,10 @@ struct ContentView: View {
                     Text(isRunning ? "Stop" : "Start")
                         .padding()
                 }
+                Spacer()
                 
                 Text("Cycle " + String( breathCycle ) + " of 7")
+                Spacer()
                 
             }
             .padding()
@@ -111,7 +143,7 @@ struct ContentView: View {
     
     func stopBreathing(){
         timer?.invalidate()
-        timer = nil // a bit confused for this one
+        timer = nil
         isRunning = false
         counter = 1
         scale = 1.0
